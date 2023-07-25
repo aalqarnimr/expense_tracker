@@ -8,8 +8,24 @@ var kDarkColorScheme = ColorScheme.fromSeed(
     brightness: Brightness.dark,
     seedColor: const Color.fromARGB(147, 34, 44, 194));
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  static _MyAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>()!;
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.system;
+
+  void changeTheme(ThemeMode themeMode) {
+    setState(() {
+      _themeMode = themeMode;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +41,18 @@ class MyApp extends StatelessWidget {
               backgroundColor: kDarkColorScheme.primaryContainer,
               foregroundColor: kDarkColorScheme.onPrimaryContainer),
         ),
+        textTheme: ThemeData().textTheme.copyWith(
+              titleLarge: const TextStyle().copyWith(
+                fontWeight: FontWeight.normal,
+                color: kDarkColorScheme.onSecondaryContainer,
+                fontSize: 18,
+              ),
+              titleMedium: const TextStyle().copyWith(
+                fontWeight: FontWeight.bold,
+                color: kDarkColorScheme.onSecondaryContainer,
+                fontSize: 16,
+              ),
+            ),
       ),
       theme: ThemeData().copyWith(
         useMaterial3: true,
@@ -53,7 +81,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
       ),
-      themeMode: ThemeMode.light,
+      themeMode: _themeMode,
       debugShowCheckedModeBanner: false,
       home: const Expenses(),
     );
